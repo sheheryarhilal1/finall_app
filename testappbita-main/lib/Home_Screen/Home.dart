@@ -9,7 +9,7 @@ class Work extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Device"),
+        title: const Text("Home Screen"),
         backgroundColor: Colors.lightGreen,
         leading: SizedBox.shrink(), // Removes the back icon
       ),

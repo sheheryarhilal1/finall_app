@@ -39,6 +39,9 @@ dependencies:
   wifi_iot: ^0.3.19+1
   http: ^1.2.2
   permission_handler:
+ 
+  
+  
 
 
 

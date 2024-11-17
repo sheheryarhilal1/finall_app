@@ -1449,7 +1449,7 @@
             "outputFile": "com.example.testappbita.app-merged_res-31:/values-night-v8_values-night-v8.arsc.flat",
             "map": [
                 {
-                    "source": "C:\\Users\\laptop\\Desktop\\testappbita-main\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\laptop\\Desktop\\New folder (2)\\testappbita-main\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
@@ -3008,24 +3008,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\laptop\\.gradle\\caches\\transforms-3\\6066a53547e8fbcf4f45946ad85f0e5d\\transformed\\lifecycle-viewmodel-2.7.0\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "49",
-                        "endOffsets": "100"
-                    },
-                    "to": {
-                        "startLines": "151",
-                        "startColumns": "4",
-                        "startOffsets": "7766",
-                        "endColumns": "49",
-                        "endOffsets": "7811"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\laptop\\Desktop\\testappbita-main\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "C:\\Users\\laptop\\Desktop\\New folder (2)\\testappbita-main\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
@@ -3041,6 +3024,23 @@
                         "endLines": "185,188",
                         "endColumns": "12,12",
                         "endOffsets": "11192,11361"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\laptop\\.gradle\\caches\\transforms-3\\6066a53547e8fbcf4f45946ad85f0e5d\\transformed\\lifecycle-viewmodel-2.7.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "49",
+                        "endOffsets": "100"
+                    },
+                    "to": {
+                        "startLines": "151",
+                        "startColumns": "4",
+                        "startOffsets": "7766",
+                        "endColumns": "49",
+                        "endOffsets": "7811"
                     }
                 }
             ]

@@ -13,11 +13,11 @@
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->C:\Users\laptop\Desktop\testappbita-main\android\app\src\debug\AndroidManifest.xml:6:5-66
-15-->C:\Users\laptop\Desktop\testappbita-main\android\app\src\debug\AndroidManifest.xml:6:22-64
+15-->C:\Users\laptop\Desktop\New folder (2)\testappbita-main\android\app\src\debug\AndroidManifest.xml:6:5-66
+15-->C:\Users\laptop\Desktop\New folder (2)\testappbita-main\android\app\src\debug\AndroidManifest.xml:6:22-64
 16    <uses-permission android:name="android.permission.CAMERA" />
-16-->C:\Users\laptop\Desktop\testappbita-main\android\app\src\main\AndroidManifest.xml:2:5-64
-16-->C:\Users\laptop\Desktop\testappbita-main\android\app\src\main\AndroidManifest.xml:2:22-62
+16-->C:\Users\laptop\Desktop\New folder (2)\testappbita-main\android\app\src\main\AndroidManifest.xml:2:5-64
+16-->C:\Users\laptop\Desktop\New folder (2)\testappbita-main\android\app\src\main\AndroidManifest.xml:2:22-62
 17    <!--
 18 Required to query activities that can process text, see:
 19         https://developer.android.com/training/package-visibility and
@@ -26,50 +26,50 @@
 22         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
 23    -->
 24    <queries>
-24-->C:\Users\laptop\Desktop\testappbita-main\android\app\src\main\AndroidManifest.xml:43:5-48:15
+24-->C:\Users\laptop\Desktop\New folder (2)\testappbita-main\android\app\src\main\AndroidManifest.xml:43:5-48:15
 25        <intent>
-25-->C:\Users\laptop\Desktop\testappbita-main\android\app\src\main\AndroidManifest.xml:44:9-47:18
+25-->C:\Users\laptop\Desktop\New folder (2)\testappbita-main\android\app\src\main\AndroidManifest.xml:44:9-47:18
 26            <action android:name="android.intent.action.PROCESS_TEXT" />
-26-->C:\Users\laptop\Desktop\testappbita-main\android\app\src\main\AndroidManifest.xml:45:13-72
-26-->C:\Users\laptop\Desktop\testappbita-main\android\app\src\main\AndroidManifest.xml:45:21-70
+26-->C:\Users\laptop\Desktop\New folder (2)\testappbita-main\android\app\src\main\AndroidManifest.xml:45:13-72
+26-->C:\Users\laptop\Desktop\New folder (2)\testappbita-main\android\app\src\main\AndroidManifest.xml:45:21-70
 27
 28            <data android:mimeType="text/plain" />
-28-->C:\Users\laptop\Desktop\testappbita-main\android\app\src\main\AndroidManifest.xml:46:13-50
-28-->C:\Users\laptop\Desktop\testappbita-main\android\app\src\main\AndroidManifest.xml:46:19-48
+28-->C:\Users\laptop\Desktop\New folder (2)\testappbita-main\android\app\src\main\AndroidManifest.xml:46:13-50
+28-->C:\Users\laptop\Desktop\New folder (2)\testappbita-main\android\app\src\main\AndroidManifest.xml:46:19-48
 29        </intent>
 30    </queries>
 31
 32    <uses-feature
-32-->[:mobile_scanner] C:\Users\laptop\Desktop\testappbita-main\build\mobile_scanner\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-11:36
+32-->[:mobile_scanner] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\mobile_scanner\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-11:36
 33        android:name="android.hardware.camera"
-33-->[:mobile_scanner] C:\Users\laptop\Desktop\testappbita-main\build\mobile_scanner\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-47
+33-->[:mobile_scanner] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\mobile_scanner\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-47
 34        android:required="false" />
-34-->[:mobile_scanner] C:\Users\laptop\Desktop\testappbita-main\build\mobile_scanner\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-33
+34-->[:mobile_scanner] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\mobile_scanner\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-33
 35    <uses-feature android:name="android.hardware.wifi" />
-35-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-58
-35-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:7:19-55
+35-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-58
+35-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:7:19-55
 36
 37    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-37-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:10:5-76
-37-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:10:22-73
+37-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:10:5-76
+37-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:10:22-73
 38    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-38-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-79
-38-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:11:22-76
+38-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-79
+38-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:11:22-76
 39    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-39-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:12:5-79
-39-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:12:22-76
+39-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:12:5-79
+39-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:12:22-76
 40    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-40-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-79
-40-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:13:22-76
+40-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-79
+40-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:13:22-76
 41    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- TODO remove the below two permission from v1.0.0, user need to add this explicitly -->
-41-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:14:5-81
-41-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:14:22-78
+41-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:14:5-81
+41-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:14:22-78
 42    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-42-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:16:5-76
-42-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:16:22-73
+42-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:16:5-76
+42-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:16:22-73
 43    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-43-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:17:5-73
-43-->[:wifi_iot] C:\Users\laptop\Desktop\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:17:22-70
+43-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:17:5-73
+43-->[:wifi_iot] C:\Users\laptop\Desktop\New folder (2)\testappbita-main\build\wifi_iot\intermediates\merged_manifest\debug\AndroidManifest.xml:17:22-70
 44
 45    <permission
 45-->[androidx.core:core:1.13.1] C:\Users\laptop\.gradle\caches\transforms-3\28ee8a5ebc96d117de5598ee6fce01ba\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
