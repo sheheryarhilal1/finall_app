@@ -16,8 +16,8 @@ class Setting extends StatelessWidget {
             child: Container(
               height: 50,
               width: 500,
-              child: Text("Dashboard Item Opacity"),
               color: Colors.grey,
+              child: Text("Dashboard Item Opacity"),
             ),
           )
         ],

@@ -3,6 +3,8 @@ import 'package:testappbita/open_folder/singup.dart';
 import 'package:flutter/material.dart';
 
 class RoundedRectangleScreen extends StatelessWidget {
+  const RoundedRectangleScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,10 +141,6 @@ class RoundedRectangleScreen extends StatelessWidget {
                             ),
                           );
                         },
-                        child: const Text(
-                          'Signup With Email',
-                          style: TextStyle(color: Colors.white),
-                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           shadowColor: Colors.white,
@@ -153,6 +151,10 @@ class RoundedRectangleScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
+                        ),
+                        child: const Text(
+                          'Signup With Email',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -167,10 +169,6 @@ class RoundedRectangleScreen extends StatelessWidget {
                             ),
                           );
                         },
-                        child: const Text(
-                          'Signin With Email',
-                          style: TextStyle(color: Colors.white),
-                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           padding: const EdgeInsets.symmetric(
@@ -180,6 +178,10 @@ class RoundedRectangleScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
+                        ),
+                        child: const Text(
+                          'Signin With Email',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ],

@@ -3,7 +3,10 @@ import 'package:testappbita/open_folder/singup.dart';
 import 'package:flutter/material.dart';
 
 class Signin extends StatefulWidget {
+  const Signin({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SigninState createState() => _SigninState();
 }
 
@@ -161,12 +164,6 @@ class _SigninState extends State<Signin> {
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: _login,
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(
-                            color: Colors.white, // Set the text color to white
-                          ),
-                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green.shade400,
                           padding: const EdgeInsets.symmetric(
@@ -175,6 +172,12 @@ class _SigninState extends State<Signin> {
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(
+                            color: Colors.white, // Set the text color to white
                           ),
                         ),
                       ),

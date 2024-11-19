@@ -6,6 +6,8 @@ class Signup extends StatelessWidget {
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
+  Signup({super.key});
+
   void _showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -57,6 +59,7 @@ class Signup extends StatelessWidget {
 
     // Delay for the Snackbar to show before navigating
     Future.delayed(const Duration(seconds: 2), () {
+      // ignore: use_build_context_synchronously
       Navigator.pop(context); // Navigate back to Signin
     });
   }
@@ -73,7 +76,7 @@ class Signup extends StatelessWidget {
             child: Container(
               height: MediaQuery.of(context).size.height / 2,
               decoration: const BoxDecoration(
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   colors: [
                     Colors.greenAccent, // Light green color
                     Colors.green, // Darker green color
@@ -172,10 +175,6 @@ class Signup extends StatelessWidget {
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () => _register(context),
-                        child: const Text(
-                          'Register',
-                          style: TextStyle(color: Colors.white),
-                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           padding: const EdgeInsets.symmetric(
@@ -185,6 +184,10 @@ class Signup extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
+                        ),
+                        child: const Text(
+                          'Register',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ],

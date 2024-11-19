@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Device extends StatelessWidget {
   final String scannedData;
 
-  Device({required this.scannedData});
+  const Device({super.key, required this.scannedData});
 
   @override
   Widget build(BuildContext context) {
