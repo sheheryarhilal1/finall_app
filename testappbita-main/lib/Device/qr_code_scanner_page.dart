@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:testappbita/Device/pannel.dart';
 import 'package:testappbita/Home_Screen/Home.dart';
 import 'package:testappbita/open_folder/singin.dart';
 import 'package:wifi_iot/wifi_iot.dart';
@@ -28,7 +29,6 @@ class QRCodeScanner extends StatefulWidget {
   const QRCodeScanner({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _QRCodeScannerState createState() => _QRCodeScannerState();
 }
 
@@ -37,13 +37,13 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
   MobileScannerController cameraController = MobileScannerController();
   List<Map<String, String>> scannedConnections = [];
 
-  // To track the selected tab for the bottom navigation
   int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _requestPermissions();
+    // No need to load connections since we're removing shared preferences
   }
 
   Future<void> _requestPermissions() async {
@@ -94,6 +94,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
     setState(() {
       if (ssid != null && password != null) {
         scannedConnections.add({'ssid': ssid, 'password': password});
+        // Removed the saving to shared preferences
       }
     });
 
@@ -112,12 +113,10 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
     });
   }
 
-  // Handle the tab change
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
       if (_selectedIndex == 1) {
-        // Navigate to ConnectionResultScreen when the 'Device' tab is tapped
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -128,7 +127,6 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
           ),
         );
       } else if (_selectedIndex == 2) {
-        // Navigate to SettingsScreen when the 'Settings' tab is tapped
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -173,7 +171,6 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
           ),
         ],
       ),
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -210,7 +207,6 @@ class ConnectionResultScreen extends StatefulWidget {
       {super.key, required this.result, required this.connections});
 
   @override
-  // ignore: library_private_types_in_public_api
   _ConnectionResultScreenState createState() => _ConnectionResultScreenState();
 }
 
@@ -218,8 +214,6 @@ class _ConnectionResultScreenState extends State<ConnectionResultScreen> {
   String? ssid;
   String? password;
   String? connectionStatus = 'Not Connected';
-
-  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -245,7 +239,6 @@ class _ConnectionResultScreenState extends State<ConnectionResultScreen> {
     }
   }
 
-  // Method to connect to the Wi-Fi network when SSID and password are tapped
   Future<void> _connectToWiFi(String ssid, String password) async {
     bool result =
         await WiFiForIoTPlugin.findAndConnect(ssid, password: password);
@@ -256,9 +249,7 @@ class _ConnectionResultScreenState extends State<ConnectionResultScreen> {
       connectionStatus = connectionStatusMessage;
     });
 
-    // Show the connection status to the user
     showDialog(
-      // ignore: use_build_context_synchronously
       context: context,
       builder: (context) => AlertDialog(
         title: Text(result ? 'Success' : 'Failure'),
@@ -267,36 +258,20 @@ class _ConnectionResultScreenState extends State<ConnectionResultScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
+              if (result) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Pannel(),
+                  ),
+                );
+              }
             },
             child: Text('OK'),
           ),
         ],
       ),
     );
-  }
-
-  // Handle the selection of bottom navigation items
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    // Navigate to the selected screen (Home or Settings)
-    if (_selectedIndex == 0) {
-      // Navigate to Home
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Work()), // Replace with your HomeScreen
-      );
-    } else if (_selectedIndex == 1) {
-      // Navigate to Settings
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                SettingsScreen()), // Replace with your SettingsScreen
-      );
-    }
   }
 
   @override
@@ -318,7 +293,6 @@ class _ConnectionResultScreenState extends State<ConnectionResultScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (ssid != null) ...[
-                // Display the SSID and Password if available
                 Container(
                   padding: const EdgeInsets.all(8),
                   margin: const EdgeInsets.symmetric(vertical: 8),
@@ -403,30 +377,14 @@ class _ConnectionResultScreenState extends State<ConnectionResultScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-      ),
     );
   }
 }
 
-// Settings screen that will be displayed when the "Settings" tab is tapped
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _SettingsScreenState createState() => _SettingsScreenState();
 }
 
@@ -434,32 +392,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   double _sliderValue1 = 0.5;
   double _sliderValue2 = 0.5;
   double _sliderValue3 = 0.5;
-  bool _sensorBorderEnabled = false; // Track the state of the switch
-  int _selectedIndex = 0; // Track the selected tab index
+  bool _sensorBorderEnabled = false;
+  int _selectedIndex = 0;
 
-  // Function to handle tab change
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    if (index == 2) {
-      // If the device icon is pressed (index 2), navigate to ConnectionScreenStatus
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ConnectionResultScreen(
-            result:
-                'Connected to MyWiFi;P:mySecretPassword', // Example result string
-            connections: [
-              {'ssid': 'BITA_RMS', 'password': '123456789'},
-              {'ssid': 'ZMD-AAA012', 'password': 'bitahomes'}
-            ], // Example list of connections
-          ),
-        ),
-      );
-    }
-    // If the home icon is pressed (index 1), navigate to Work screen
-    else if (index == 1) {
+    if (index == 1) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const Work()),
@@ -477,9 +417,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Existing sliders and sensor border section
-
-            // First slider with clock icon
             Container(
               margin: const EdgeInsets.only(bottom: 16.0),
               child: Row(
@@ -511,7 +448,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
             ),
-            // Second slider with brightness icon
             Container(
               margin: const EdgeInsets.only(bottom: 16.0),
               child: Row(
@@ -543,7 +479,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
             ),
-            // Third slider with clock icon
             Row(
               children: [
                 const Icon(Icons.access_time),
@@ -572,46 +507,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
-            // Sensor Border Section
-            Container(
-              margin: const EdgeInsets.only(top: 16.0),
-              padding: const EdgeInsets.all(10), // Padding for inner spacing
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: _sensorBorderEnabled
-                      ? Colors.blue
-                      : Colors
-                          .grey, // Change border color based on the switch state
-                  width: 2.0, // Border width
-                ),
-                borderRadius: BorderRadius.circular(8), // Rounded corners
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.monitor), // Monitor icon on the left
-                  const SizedBox(width: 10),
-                  const Text(
-                    'Sensor Border',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const Spacer(), // Push the switch to the right
-                  Switch(
-                    value: _sensorBorderEnabled,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _sensorBorderEnabled = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-            // Sign Out Button
             Container(
               margin: const EdgeInsets.only(top: 32.0),
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigate to the new screen
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Signin()),
@@ -623,10 +522,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
         ),
       ),
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex, // Set the current index
-        onTap: _onItemTapped, // Handle tab selection
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
@@ -637,8 +535,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons
-                .devices), // The device icon to navigate to ConnectionScreenStatus
+            icon: Icon(Icons.devices),
             label: 'Device',
           ),
         ],
