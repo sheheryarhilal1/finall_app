@@ -13,7 +13,7 @@ class Signup extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Error'),
+          title: const Text('Try  again'),
           content: Text(message),
           actions: [
             TextButton(
@@ -153,8 +153,7 @@ class Signup extends StatelessWidget {
                       const SizedBox(height: 20),
                       TextField(
                         controller: passwordController,
-                        obscureText: true,
-                        decoration: InputDecoration(
+                       decoration: InputDecoration(
                           labelText: 'Password',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -202,7 +201,7 @@ class Signup extends StatelessWidget {
                     "Already have an account?",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.redAccent,
+                      color: Colors.white,
                       fontSize: 16,
                     ),
                   ),

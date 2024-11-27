@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:testappbita/Device/pannel.dart';
-import 'package:testappbita/Home_Screen/Home.dart';
-import 'package:testappbita/open_folder/singin.dart';
 import 'package:wifi_iot/wifi_iot.dart';
+import 'package:testappbita/Device/pannel.dart';
+import 'package:testappbita/open_folder/singin.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,19 +35,23 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
   bool isScanning = true;
   MobileScannerController cameraController = MobileScannerController();
   List<Map<String, String>> scannedConnections = [];
-
+  String? _previousSSID;
   int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _requestPermissions();
-    // No need to load connections since we're removing shared preferences
+    _getCurrentSSID();
   }
 
   Future<void> _requestPermissions() async {
     await Permission.camera.request();
     await Permission.location.request();
+  }
+
+  Future<void> _getCurrentSSID() async {
+    _previousSSID = await WiFiForIoTPlugin.getSSID();
   }
 
   void _onDetect(BarcodeCapture capture) {
@@ -67,6 +70,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
   void _parseQRCode(String code) {
     final wifiRegex = RegExp(
         r'WIFI:T:[^;]*;S:(?<ssid>[^;]*);P:(?<password>[^;]*);H:(?:true|false);;');
+
     final wifiMatch = wifiRegex.firstMatch(code);
 
     if (wifiMatch != null) {
@@ -74,27 +78,134 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
       final password = wifiMatch.namedGroup('password');
       if (ssid != null && password != null) {
         _connectToWiFi(ssid, password);
+        //  _showWiFiDialog(ssid);
       }
     } else {
       _navigateToResultScreen("Non-Wi-Fi QR code scanned: $code");
     }
   }
 
-  Future<void> _connectToWiFi(String ssid, String password) async {
+  void _showConnectionDialog(String ssid, String defaultPassword) {
+    TextEditingController nameController = TextEditingController();
+    TextEditingController passwordController =
+        TextEditingController(text: defaultPassword);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Connect to Wi-Fi'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration:
+                      const InputDecoration(labelText: 'Connection Name'),
+                ),
+                TextField(
+                  controller: TextEditingController(text: ssid),
+                  decoration: const InputDecoration(labelText: 'SSID'),
+                  readOnly: true,
+                ),
+                TextField(
+                  controller: passwordController,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Connect'),
+              onPressed: () {
+                final name = nameController.text;
+                final password = passwordController.text;
+                if (name.isNotEmpty) {
+                  _connectToWiFi(ssid, password);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Please provide a name.")),
+                  );
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Send'),
+              onPressed: () {
+                disconnectwifi();
+                // if (_previousSSID != null) {
+                //   String placeholderPassword = '';
+                //   _connectToWiFi(
+                //           _previousSSID!, placeholderPassword, "Main Wi-Fi")
+                //       .then((success) {
+                //     if (success) {
+                //       Navigator.of(context).pop();
+                //       Navigator.pushReplacement(
+                //         context,
+                //         MaterialPageRoute(builder: (context) => const Pannel()),
+                //       );
+                //     } else {
+                //       ScaffoldMessenger.of(context).showSnackBar(
+                //         const SnackBar(
+                //             content: Text("Failed to connect to Main Wi-Fi.")),
+                //       );
+                //     }
+                //   });
+                // } else {
+                //   ScaffoldMessenger.of(context).showSnackBar(
+                //     const SnackBar(
+                //         content: Text("No previous Wi-Fi connection found.")),
+                //   );
+                // }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void diconnectwifi() async {
+    final disconnectedd = await WiFiForIoTPlugin.disconnect();
+    if (disconnectedd) {
+      print("Disconnected");
+    } else {
+      print("Not Disconnected");
+    }
+  }
+
+  Future<bool> _connectToWiFi(String ssid, String password) async {
     bool result =
         await WiFiForIoTPlugin.findAndConnect(ssid, password: password);
+
     String connectionStatus =
         result ? 'Connected to $ssid' : 'Failed to connect to $ssid';
 
     _navigateToResultScreen(connectionStatus, ssid, password);
+    if (result) {
+      _showWiFiDialog(ssid, password);
+    } else {
+      print("Not Connected  with Damper");
+    }
+    return result;
   }
 
   void _navigateToResultScreen(String result,
-      [String? ssid, String? password]) {
+      [String? ssid, String? password, String? name]) {
     setState(() {
-      if (ssid != null && password != null) {
-        scannedConnections.add({'ssid': ssid, 'password': password});
-        // Removed the saving to shared preferences
+      if (ssid != null && password != null && name != null) {
+        scannedConnections
+            .add({'ssid': ssid, 'password': password, 'name': name});
       }
     });
 
@@ -106,8 +217,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
       ),
     ).then((_) {
       setState(() {
-        isScanning =
-            true; // Enable scanning again when we pop the result screen.
+        isScanning = true;
         cameraController.start();
       });
     });
@@ -135,6 +245,74 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
         );
       }
     });
+  }
+
+  void _showWiFiDialog(String ssid, String password) {
+    TextEditingController nameController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Connect Damper to Wi-Fi'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration:
+                      const InputDecoration(labelText: 'Connection Name'),
+                ),
+                TextField(
+                  controller: passwordController,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            // TextButton(
+            //   child: const Text('Connect'),
+            //   onPressed: () {
+            //     final ssidd = nameController.text;
+            //     final pass = passwordController.text;
+            //     if (ssidd.isNotEmpty) {
+            //       _connectToWiFi(ssid, password);
+            //     } else {
+            //       ScaffoldMessenger.of(context).showSnackBar(
+            //         const SnackBar(content: Text("Please provide a name.")),
+            //       );
+            //     }
+            //     Navigator.of(context).pop();
+            //   },
+            // ),
+            TextButton(
+              child: const Text('Send'),
+              onPressed: () {
+                final ssidd = nameController.text;
+                final pass = passwordController.text;
+                if (ssidd != null) {
+                  // String placeholderPassword =
+                  //     ''; // Placeholder, could be customized
+                  diconnectwifi();
+                  String connectionStatus = true
+                      ? 'Connected to $ssid'
+                      : 'Failed to connect to $ssid';
+
+                  // _navigateToResultScreen(connectionStatus, ssid, password);
+
+                  // _connectToWiFi(ssid, placeholderPassword);
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -199,6 +377,15 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
   }
 }
 
+void disconnectwifi() async {
+  final disconnectedd = await WiFiForIoTPlugin.disconnect();
+  if (disconnectedd) {
+    print("Disconnected");
+  } else {
+    print("Not Disconnected");
+  }
+}
+
 class ConnectionResultScreen extends StatefulWidget {
   final String result;
   final List<Map<String, String>> connections;
@@ -239,6 +426,15 @@ class _ConnectionResultScreenState extends State<ConnectionResultScreen> {
     }
   }
 
+  void diconnectwifi() async {
+    final disconnectedd = await WiFiForIoTPlugin.disconnect();
+    if (disconnectedd) {
+      print("Disconnected");
+    } else {
+      print("Not Disconnected");
+    }
+  }
+
   Future<void> _connectToWiFi(String ssid, String password) async {
     bool result =
         await WiFiForIoTPlugin.findAndConnect(ssid, password: password);
@@ -249,28 +445,92 @@ class _ConnectionResultScreenState extends State<ConnectionResultScreen> {
       connectionStatus = connectionStatusMessage;
     });
 
+    if (result) {
+      // Navigate to the Pannel screen directly upon a successful connection
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Pannel()),
+      );
+    } else {
+      _showConnectionStatusDialog(context, connectionStatusMessage);
+    }
+  }
+
+  void _showConnectionStatusDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(result ? 'Success' : 'Failure'),
-        content: Text(connectionStatusMessage),
+        title: Text(message.contains('Failed') ? 'Failure' : 'Success'),
+        content: Text(message),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              if (result) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Pannel(),
-                  ),
-                );
-              }
             },
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),
+    );
+  }
+
+  void _showWiFiDialog(String ssid) {
+    TextEditingController nameController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Connect to Existing Wi-Fi'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration:
+                      const InputDecoration(labelText: 'Connection Name'),
+                ),
+                TextField(
+                  controller: passwordController,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Connect'),
+              onPressed: () {
+                final name = nameController.text;
+                final password = passwordController.text;
+                if (name.isNotEmpty) {
+                  _connectToWiFi(ssid, password);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Please provide a name.")),
+                  );
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Switch to Main Wi-Fi'),
+              onPressed: () {
+                if (ssid != null) {
+                  String placeholderPassword =
+                      ''; // Placeholder, could be customized
+                  diconnectwifi();
+                  // _connectToWiFi(ssid, placeholderPassword);
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -278,80 +538,67 @@ class _ConnectionResultScreenState extends State<ConnectionResultScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Device'),
+        title: const Text('Devices'),
       ),
       body: Center(
         child: Container(
-          margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.blue[50],
-            border: Border.all(color: Colors.blue, width: 2),
-            borderRadius: BorderRadius.circular(8),
-          ),
+          margin: const EdgeInsets.all(1),
+          padding: const EdgeInsets.all(2),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              if (ssid != null) ...[
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: connectionStatus!.contains('Failed')
-                        ? Colors.red[100]
-                        : Colors.green[100],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'SSID: $ssid',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      if (password != null)
-                        Text(
-                          'Password: $password',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.redAccent,
+              GestureDetector(
+                onTap: () {
+                  // Navigate to the new screen when tapped
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Pannel()),
+                  );
+                },
+                child: Align(
+                  alignment:
+                      Alignment.centerLeft, // Aligns the container to the left
+                  child: Container(
+                    height: 250,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.red),
+                      color: Colors.grey, // Add a background color
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment
+                          .start, // Align children to the start
+                      children: [
+                        if (ssid != null)
+                          Container(
+                            alignment: Alignment
+                                .center, // Centers the content inside the container
+                            child: Text(
+                              '$ssid',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        )
-                      else
-                        const Text(
-                          'Password not available.',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontStyle: FontStyle.italic,
-                            color: Colors.grey,
+                        const SizedBox(height: 16), // Spacing between widgets
+                        Center(
+                          child: const Text(
+                            'Damper',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Connection Status: $connectionStatus',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: connectionStatus!.contains('Failed')
-                              ? Colors.red
-                              : Colors.green,
-                        ),
-                      ),
-                    ],
+                        const SizedBox(height: 16), // Additional spacing
+                      ],
+                    ),
                   ),
                 ),
-              ],
-              const SizedBox(height: 16),
-              Text(
-                'Scanned Connections:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 8),
+
+              // Displaying the list of connections
               Expanded(
                 child: ListView.builder(
                   itemCount: widget.connections.length,
@@ -360,13 +607,17 @@ class _ConnectionResultScreenState extends State<ConnectionResultScreen> {
                     return Card(
                       margin: const EdgeInsets.symmetric(vertical: 8),
                       child: ListTile(
-                        title: Text(connection['ssid'] ?? 'Unknown SSID'),
-                        subtitle: Text(connection['password'] ?? 'No password'),
+                        title: Text(
+                          connection['name'] ?? 'Unknown Connection',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(connection['ssid'] ?? 'Unknown SSID'),
+                        trailing: const Icon(Icons.wifi),
                         onTap: () {
-                          if (connection['password'] != null) {
-                            _connectToWiFi(
-                                connection['ssid']!, connection['password']!);
-                          }
+                          // _showConnectionDialog(
+                          // context,
+                          // connection['ssid'] ??
+                          //     ''); // Ensure a valid string
                         },
                       ),
                     );
@@ -392,7 +643,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   double _sliderValue1 = 0.5;
   double _sliderValue2 = 0.5;
   double _sliderValue3 = 0.5;
-  bool _sensorBorderEnabled = false;
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -402,7 +652,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (index == 1) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Work()),
+        MaterialPageRoute(builder: (context) => const Pannel()),
       );
     }
   }
@@ -513,7 +763,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Signin()),
+                    MaterialPageRoute(builder: (context) => const Signin()),
                   );
                 },
                 child: const Text('Sign Out'),

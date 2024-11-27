@@ -35,7 +35,7 @@ class _SigninState extends State<Signin> {
       return;
     }
 
-    if (password.length < 6) {
+    if (password.length < 5) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Password must be at least 6 characters long!'),
@@ -87,7 +87,7 @@ class _SigninState extends State<Signin> {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'Welcome to Login',
+                    'Login',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

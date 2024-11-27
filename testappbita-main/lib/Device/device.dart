@@ -18,7 +18,6 @@ class Device extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.blueAccent, width: 2),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,

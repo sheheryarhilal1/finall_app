@@ -139,16 +139,10 @@ class _PannelState extends State<Pannel> {
     };
   }
 
-  // Map<String, dynamic> _buildJsonPayload() {
-  //   return {
-  //     'temperature': 25,
-  //     'humidity': 60,
-  //     'status': 'OK',
-  //   };
-  // }
 
   // Create a method to publish the JSON message
   String _publishJsonMessage() {
+    // ignore: unused_local_variable
     final String topic =
         '/KRC/1'; // Specify the topic where you want to publish
     packet_id++;
@@ -306,6 +300,7 @@ class _PannelState extends State<Pannel> {
                             children: [
                               GestureDetector(
                                 onTap: () {
+                                  // ignore: unused_local_variable
                                   String message = _selectSeason(!isSummer);
                                   // String jsonpayloadd = _publishJsonMessage();
                                   // publishMessage(jsonpayloadd);
