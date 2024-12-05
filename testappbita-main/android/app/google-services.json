@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "385422170884",
+    "project_id": "bita-zonemaster",
+    "storage_bucket": "bita-zonemaster.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385422170884:android:ccae49d2bd950774644e51",
+        "android_client_info": {
+          "package_name": "com.example.testappbita"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuw9YV0X8hxQ09D_UAaxnapaLQUQgtb-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
